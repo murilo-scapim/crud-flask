@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Cadastro de Produto {% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h3 class="mb-4">Cadastro de Produto</h3>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label" for="descricao">Descrição</label>
+                <input class="form-control" id="descricao" name="descricao" required type="text">
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label" for="preco">Preço</label>
+                    <input class="form-control" id="preco" name="preco" required step="0.01" type="number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label" for="quantidade">Quantidade</label>
+                    <input class="form-control" id="quantidade" name="quantidade" required
+                           step="1" type="number">
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label class="form-label" for="quantidade_minima">Quantidade mínima</label>
+                    <input class="form-control" id="quantidade_minima" name="quantidade_minima" required
+                           step="1" type="number">
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+
+</div>
+{% endblock %}
