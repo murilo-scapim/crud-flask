@@ -7,7 +7,6 @@ estoque = []
 
 @app.route("/cadastrar", methods=["GET", "POST"])
 def cadastrar_produto():
-
     if request.method == "GET":
         return render_template("cadastro.html")
 
@@ -33,6 +32,11 @@ def listar_produtos():
     return render_template("lista.html", produtos=estoque)
 
 
+@app.route("/relatorio")
+def exibir_relatorio():
+    return render_template("relatorio.html", produtos=estoque)
+
+
 def buscar_produto_por_cod(codigo):
     for produto in estoque:
         if produto["codigo"] == codigo:
@@ -52,8 +56,6 @@ def editar_produto(codigo):
             produto["quantidade_minima"] = int(request.form["quantidade_minima"])
             return redirect(url_for("listar_produtos"))
 
-        print(produto)
-
         return render_template("editar.html", produto=produto)
     else:
         print("Produto não encontrado")
@@ -66,6 +68,22 @@ def apagar_produto(codigo):
     if produto:
         estoque.remove(produto)
     return redirect(url_for("listar_produtos"))
+
+
+@app.route("/entrada/<int:codigo>", methods=["GET", "POST"])
+def entrada_estoque(codigo):
+    produto = buscar_produto_por_cod(codigo)
+    if not produto:
+        return "Produto não encontrado"
+
+    if request.method == "POST":
+        quantidade = int(request.form["quantidade"])
+        if quantidade > 0:
+            produto["quantidade"] += quantidade
+            return redirect(url_for("listar_produtos"))
+        return render_template("entrada_estoque.html", produto=produto,
+                               erro="Quantidade inválida!")
+    return render_template("entrada_estoque.html", produto=produto)
 
 
 if __name__ == '__main__':

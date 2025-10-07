@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %} Relatório de estoque {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="mb-4"> Relatório de estoque </h3>
+
+        {% if produtos %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Status</th>
+                    <th>Reposição</th>
+                    <th>Entrada de estoque</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto["codigo"] }}</td>
+                    <td>{{ produto["descricao"] }}</td>
+                    <td>{{ produto["quantidade"] }}</td>
+
+                    <td>
+                        {% if produto["quantidade"] < produto["quantidade_minima"] %}
+                        <span class="badge bg-warning">Estoque baixo</span>
+                        {% else %}
+                        <span class="badge bg-info">Em estoque</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                      {% if produto["quantidade"] < produto["quantidade_minima"] %}
+                        {{ produto["quantidade_minima"] - produto["quantidade"] }}
+                      {% else %}
+                        0
+                      {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{{ url_for('entrada_estoque', codigo=produto['codigo']) }}"
+                           class="btn btn-outline-warning">Adicionar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-primary text-center">
+            Nenhum produto registrado!
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

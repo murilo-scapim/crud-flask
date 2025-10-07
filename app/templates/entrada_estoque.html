@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %} Entrada de estoque {% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h3 class="mb-4">Entrada de estoque</h3>
+        <form method="POST">
+
+            <div class="row">
+                <div class="mb-3 col-md-10">
+                    <label class="form-label" for="descricao">Descrição</label>
+                    <input class="form-control" id="descricao" name="descricao" type="text"
+                           value="{{ produto['descricao'] }}" disabled>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label" for="quantidade">Quantidade</label>
+                    <input class="form-control" id="quantidade" name="quantidade" required
+                           step="1" type="number">
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">Adicionar</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
