@@ -29,7 +29,7 @@
                     <td>{{ produto["quantidade"] }}</td>
 
                     <td>
-                        {% if produto["quantidade"] <= produto["quantidade_minima"] %}
+                        {% if produto["quantidade"] < produto["quantidade_minima"] %}
                         <span class="badge bg-warning">Estoque baixo</span>
                         {% else %}
                         <span class="badge bg-info">Em estoque</span>
@@ -42,7 +42,7 @@
 
                         <form action="{{ url_for('apagar_produto', codigo=produto['codigo']) }}" method="POST"
                               style="display:inline">
-                            <button type="submit" class="btn btn-danger btn-sm"
+                            <button type="submit" class="btn btn-outline-danger"
                                     onclick="return confirm('Apagar o produto {{ produto['descricao'] }}?');">Apagar
                             </button>
                         </form>

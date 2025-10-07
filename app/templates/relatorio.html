@@ -26,12 +26,11 @@
                     <td>{{ produto["codigo"] }}</td>
                     <td>{{ produto["descricao"] }}</td>
                     <td>{{ produto["quantidade"] }}</td>
-
                     <td>
                         {% if produto["quantidade"] < produto["quantidade_minima"] %}
-                        <span class="badge bg-warning">Estoque baixo</span>
+                            <span class="badge bg-warning">Estoque baixo</span>
                         {% else %}
-                        <span class="badge bg-info">Em estoque</span>
+                            <span class="badge bg-info">Em estoque</span>
                         {% endif %}
                     </td>
 
@@ -45,7 +44,7 @@
 
                     <td>
                         <a href="{{ url_for('entrada_estoque', codigo=produto['codigo']) }}"
-                           class="btn btn-outline-warning">Adicionar</a>
+                           class="btn btn-outline-warning">Adicionar estoque</a>
                     </td>
                 </tr>
                 {% endfor %}
