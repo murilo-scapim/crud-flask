@@ -1,8 +1,20 @@
+import psycopg2
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
 estoque = []
+
+
+def criar_conexao_banco():
+    con = psycopg2.connect(
+        host="localhost",
+        port=5432,
+        database="loja",
+        user="postgres",
+        password="123456"
+    )
+    return con
 
 
 @app.route("/cadastrar", methods=["GET", "POST"])
@@ -15,16 +27,20 @@ def cadastrar_produto():
     quantidade = int(request.form["quantidade"])
     quantidade_minima = int(request.form["quantidade_minima"])
 
-    produto = {
-        "codigo": len(estoque) + 1,
-        "descricao": descricao,
-        "preco": preco,
-        "quantidade": quantidade,
-        "quantidade_minima": quantidade_minima
-    }
-
-    estoque.append(produto)
-    return redirect(url_for("listar_produtos"))
+    try:
+        con = criar_conexao_banco()
+        cursor = con.cursor()
+        cursor.execute('''INSERT INTO produto(descricao, preco,
+            quantidade, quantidade_minima)
+            VALUES (%s, %s, %s, %s);''', (descricao, preco,
+                                          quantidade, quantidade_minima))
+        con.commit()
+        cursor.close()
+        con.close()
+        print("Produto inserido!")
+        return redirect(url_for("listar_produtos"))
+    except Exception as e:
+        print(f"Erro ao cadastrar produto: {e}")
 
 
 @app.route("/listar")
