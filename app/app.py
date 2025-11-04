@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 from flask import Flask, render_template, request, redirect, url_for
+from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 load_dotenv()
@@ -48,7 +49,16 @@ def cadastrar_produto():
 
 @app.route("/listar")
 def listar_produtos():
-    return render_template("lista.html", produtos=estoque)
+    try:
+        con = criar_conexao_banco()
+        cursor = con.cursor(cursor_factory=RealDictCursor)
+        cursor.execute('SELECT * FROM produto;')
+        produtos = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return render_template("lista.html", produtos=produtos)
+    except Exception as e:
+        print(f"Erro ao listar produtos: {e}")
 
 
 @app.route("/relatorio")
