@@ -1,18 +1,21 @@
+import os
+from dotenv import load_dotenv
 import psycopg2
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+load_dotenv()
 
 estoque = []
 
 
 def criar_conexao_banco():
     con = psycopg2.connect(
-        host="localhost",
-        port=5432,
-        database="loja",
-        user="postgres",
-        password="123456"
+        host=os.getenv("HOST"),
+        port=os.getenv("PORT"),
+        database=os.getenv("DATABASE"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("PASSWORD")
     )
     return con
 
